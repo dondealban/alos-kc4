@@ -1,0 +1,88 @@
+<graph id="Graph">
+  <version>1.0</version>
+  <node id="Read">
+    <operator>Read</operator>
+    <sources/>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <file>/Users/dondealban/Image Processing/Philippines/KC 4/Sibuyan/1 TILES/2015/TIFF/Sibuyan_2015_PALSAR_HH.tif</file>
+      <formatName>GeoTIFF</formatName>
+    </parameters>
+  </node>
+  <node id="Speckle-Filter">
+    <operator>Speckle-Filter</operator>
+    <sources>
+      <sourceProduct refid="Read"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <sourceBands>band_1</sourceBands>
+      <filter>Refined Lee</filter>
+      <filterSizeX>3</filterSizeX>
+      <filterSizeY>3</filterSizeY>
+      <dampingFactor>2</dampingFactor>
+      <estimateENL>true</estimateENL>
+      <enl>1.0</enl>
+      <numLooksStr>1</numLooksStr>
+      <windowSize>7x7</windowSize>
+      <targetWindowSizeStr>3x3</targetWindowSizeStr>
+      <sigmaStr>0.9</sigmaStr>
+      <anSize>50</anSize>
+    </parameters>
+  </node>
+  <node id="BandMaths">
+    <operator>BandMaths</operator>
+    <sources>
+      <sourceProduct refid="Speckle-Filter"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <targetBands>
+        <targetBand>
+          <name>Sigma_HH</name>
+          <type>float32</type>
+          <expression>(10 * log10(band_1 * band_1)) - 83</expression>
+          <description/>
+          <unit/>
+          <noDataValue>0.0</noDataValue>
+        </targetBand>
+      </targetBands>
+      <variables/>
+    </parameters>
+  </node>
+  <node id="Write(2)">
+    <operator>Write</operator>
+    <sources>
+      <sourceProduct refid="BandMaths"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <file>/Users/dondealban/Image Processing/Philippines/KC 4/Sibuyan/3 SIGMA0/Sibuyan_2015_PALSAR_HH_Sigma0.tif</file>
+      <formatName>GeoTIFF</formatName>
+    </parameters>
+  </node>
+  <node id="Write">
+    <operator>Write</operator>
+    <sources>
+      <sourceProduct refid="Speckle-Filter"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <file>/Users/dondealban/Image Processing/Philippines/KC 4/Sibuyan/2 SPECKLE FILTER/Sibuyan_2015_PALSAR_HH_Spk.tif</file>
+      <formatName>GeoTIFF</formatName>
+    </parameters>
+  </node>
+  <applicationData id="Presentation">
+    <Description/>
+    <node id="Read">
+            <displayPosition x="61.0" y="56.0"/>
+    </node>
+    <node id="Speckle-Filter">
+      <displayPosition x="190.0" y="56.0"/>
+    </node>
+    <node id="BandMaths">
+      <displayPosition x="200.0" y="140.0"/>
+    </node>
+    <node id="Write(2)">
+      <displayPosition x="360.0" y="140.0"/>
+    </node>
+    <node id="Write">
+      <displayPosition x="357.0" y="56.0"/>
+    </node>
+  </applicationData>
+</graph>
