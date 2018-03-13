@@ -20,9 +20,9 @@ library(plyr)
 
 # Read Input Data ------------------------
 
-roi2007 <- read.csv(file="ROI_Sibuyan_2007_L2.csv", header=TRUE, sep=",")
-roi2010 <- read.csv(file="ROI_Sibuyan_2010_L2.csv", header=TRUE, sep=",")
-roi2015 <- read.csv(file="ROI_Sibuyan_2015_L2.csv", header=TRUE, sep=",")
+roi2007 <- read.csv(file="ROI_SNegros_2007_L2.csv", header=TRUE, sep=",")
+roi2010 <- read.csv(file="ROI_SNegros_2010_L2.csv", header=TRUE, sep=",")
+roi2015 <- read.csv(file="ROI_SNegros_2015_L2.csv", header=TRUE, sep=",")
 
 # Clean and Subset Data ------------------
 
@@ -192,4 +192,4 @@ ggsave(sarHV_VAR, file="Boxplot-HV-VAR.pdf", width=19.89, height=15, units="cm",
 
 ggsave(sarNDI, file="Boxplot-NDI.pdf", width=19.89, height=15, units="cm", dpi=300)
 ggsave(sarNLI, file="Boxplot-NLI.pdf", width=19.89, height=15, units="cm", dpi=300)
-ggsave(sarRAT, file="Boxplot-RT1.pdf", width=19.89, height=15, units="cm", dpi=300)
+ggsave(sarRAT, file="Boxplot-RAT.pdf", width=19.89, height=15, units="cm", dpi=300)
