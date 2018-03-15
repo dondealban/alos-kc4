@@ -6,7 +6,7 @@
 #
 # Script By:      Jose Don T De Alban
 # Date Created:   17 Feb 2017
-# Last Modified:  10 Mar 2018
+# Last Modified:  15 Mar 2018
 
 # Set Working Directory ------------------
 
@@ -15,8 +15,6 @@ setwd("/Users/dondealban/KC4/")
 # Load Required Packages -----------------
 
 library(ggplot2)
-library(reshape2)
-library(plyr)
 
 # Read Input Data ------------------------
 
