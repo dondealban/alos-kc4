@@ -15,8 +15,6 @@ setwd("/Users/dondealban/KC4/")
 # Load Required Packages -----------------
 
 library(ggplot2)
-library(reshape2)
-library(plyr)
 
 # Read Input Data ------------------------
 
