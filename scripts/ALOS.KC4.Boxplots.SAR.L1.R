@@ -6,7 +6,7 @@
 #
 # Script By:      Jose Don T De Alban
 # Date Created:   17 Feb 2017
-# Last Modified:  10 Mar 2018
+# Last Modified:  15 Mar 2018
 
 # Set Working Directory ------------------
 
@@ -20,9 +20,18 @@ library(plyr)
 
 # Read Input Data ------------------------
 
-roi2007 <- read.csv(file="ROI_SNegros_2007_L1.csv", header=TRUE, sep=",")
-roi2010 <- read.csv(file="ROI_SNegros_2010_L1.csv", header=TRUE, sep=",")
-roi2015 <- read.csv(file="ROI_SNegros_2015_L1.csv", header=TRUE, sep=",")
+# Read training and testing data per year
+train2007 <- read.csv(file="ROI_Train_SNegros_2007_L1.csv", header=TRUE, sep=",")
+test2007 <- read.csv(file="ROI_Test_SNegros_2007_L1.csv", header=TRUE, sep=",")
+train2010 <- read.csv(file="ROI_Train_SNegros_2010_L1.csv", header=TRUE, sep=",")
+test2010 <- read.csv(file="ROI_Test_SNegros_2010_L1.csv", header=TRUE, sep=",")
+train2015 <- read.csv(file="ROI_Train_SNegros_2015_L1.csv", header=TRUE, sep=",")
+test2015 <- read.csv(file="ROI_Test_SNegros_2015_L1.csv", header=TRUE, sep=",")
+
+# Combine training and testing data per year into one dataframe
+roi2007 <- rbind(train2007, test2007)
+roi2010 <- rbind(train2010, test2010)
+roi2015 <- rbind(train2015, test2015)
 
 # Clean and Subset Data ------------------
 
