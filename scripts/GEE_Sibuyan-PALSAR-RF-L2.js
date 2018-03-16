@@ -131,36 +131,69 @@ var bandsSAR = ['HH', 'HV', 'RAT', 'NDI', 'NLI',
   DEFINE REGIONS OF INTEREST
 ********************************/
 
-var sibuyanROI = ee.FeatureCollection('users/dondealban/Philippines/ALOSKC4/SBY/sibuyan-landcover-roi');
-Map.addLayer(sibuyanROI, {'color': '1E90FF'}, 'Sibuyan ROI');
+var points = ee.FeatureCollection('users/dondealban/Philippines/ALOSKC4/SBY/sibuyan-landcover-roi-final');
+Map.addLayer(points, {'color': '1E90FF'}, 'Sibuyan ROI');
+
+// Create 25m-radius buffer around points
+var buff25 = function(feature) {
+    return feature.buffer(25);  
+};
+var sibuyanROI = points.map(buff25);
 
 // Initialise random column and values for ROI feature collection 
-sibuyanROI = sibuyanROI.randomColumn('random', seed);
+sibuyanROI = sibuyanROI.randomColumn('random1', seed);
 
-// Create training and testing regions of interest from the image dataset
-var roi2007 = stackSAR2007.select(bandsSAR).sampleRegions({
-	collection: sibuyanROI,
+var train = sibuyanROI.filter(ee.Filter.lte('random1', 0.7));
+var test  = sibuyanROI.filter(ee.Filter.gt('random1', 0.7));
+
+Map.addLayer(train, {'color': '000000'}, 'ROI Train', true); 
+Map.addLayer(test,  {'color': 'FF0000'}, 'ROI Test', true); 
+
+// Initialise random column and values for ROI feature collection 
+train = train.randomColumn('random', seed);
+test  = test.randomColumn('random', seed);
+
+// Create training ROIs from the image dataset
+var roi2007train = stackSAR2007.select(bandsSAR).sampleRegions({
+	collection: train,
 	properties: ['ClassID2', 'random'],
 	scale: 25
 });
-var roi2010 = stackSAR2010.select(bandsSAR).sampleRegions({
-	collection: sibuyanROI,
+var roi2010train = stackSAR2010.select(bandsSAR).sampleRegions({
+	collection: train,
 	properties: ['ClassID2', 'random'],
 	scale: 25
 });
-var roi2015 = stackSAR2015.select(bandsSAR).sampleRegions({
-	collection: sibuyanROI,
+var roi2015train = stackSAR2015.select(bandsSAR).sampleRegions({
+	collection: train,
+	properties: ['ClassID2', 'random'],
+	scale: 25
+});
+
+// Create testing ROIs from the image dataset
+var roi2007test = stackSAR2007.select(bandsSAR).sampleRegions({
+	collection: test,
+	properties: ['ClassID2', 'random'],
+	scale: 25
+});
+var roi2010test = stackSAR2010.select(bandsSAR).sampleRegions({
+	collection: test,
+	properties: ['ClassID2', 'random'],
+	scale: 25
+});
+var roi2015test = stackSAR2015.select(bandsSAR).sampleRegions({
+	collection: test,
 	properties: ['ClassID2', 'random'],
 	scale: 25
 });
 
 // Partition the regions of interest into training and testing areas
-var train2007 = roi2007.filter(ee.Filter.lte('random', 0.7));
-var tests2007 = roi2007.filter(ee.Filter.gt('random', 0.7));
-var train2010 = roi2010.filter(ee.Filter.lte('random', 0.7));
-var tests2010 = roi2010.filter(ee.Filter.gt('random', 0.7));
-var train2015 = roi2015.filter(ee.Filter.lte('random', 0.7));
-var tests2015 = roi2015.filter(ee.Filter.gt('random', 0.7));
+var train2007 = roi2007train.filter(ee.Filter.lte('random', 0.7));
+var tests2007 = roi2007test.filter(ee.Filter.lte('random', 0.7));
+var train2010 = roi2010train.filter(ee.Filter.lte('random', 0.7));
+var tests2010 = roi2010test.filter(ee.Filter.lte('random', 0.7));
+var train2015 = roi2015train.filter(ee.Filter.lte('random', 0.7));
+var tests2015 = roi2015test.filter(ee.Filter.lte('random', 0.7));
 
 // Print number of regions of interest for training and testing at the console 
 print('Training, n =', train2015.aggregate_count('.all'));
@@ -320,10 +353,15 @@ Map.addLayer(hh2015.addBands(hv2015).addBands(rat2015), {min: [-30, -30, -5], ma
 ********************************/
 
 // Display classified image
-var classPalette = ['246a24', 'ff0000', 'a65400', '66ccff', 'ffff66']; // Palette for classified images
-Map.addLayer(masked2007, {min: 0, max: 4, palette: classPalette}, '2007 Classification',  true);
-Map.addLayer(masked2010, {min: 0, max: 4, palette: classPalette}, '2010 Classification',  true);
-Map.addLayer(masked2015, {min: 0, max: 4, palette: classPalette}, '2015 Classification',  true);
+var classPalette = ['ffffff',  // No data
+                    '246a24',  // Forestland
+                    'ff0000',  // Settlements
+                    'a65400',  // Cropland
+                    '66ccff',  // Wetland
+                    'ffff66']; // Grassland
+Map.addLayer(masked2007, {min: 0, max: 5, palette: classPalette}, '2007 Classification',  true);
+Map.addLayer(masked2010, {min: 0, max: 5, palette: classPalette}, '2010 Classification',  true);
+Map.addLayer(masked2015, {min: 0, max: 5, palette: classPalette}, '2015 Classification',  true);
 
 
 /*******************************
@@ -357,12 +395,12 @@ Export.image.toDrive({
 });
 
 // Export computed statistics as csv file
-Export.table.toDrive(roi2007, 'ROI_Sibuyan_2007_L2', 'Google Earth Engine');
-Export.table.toDrive(roi2010, 'ROI_Sibuyan_2010_L2', 'Google Earth Engine');
-Export.table.toDrive(roi2015, 'ROI_Sibuyan_2015_L2', 'Google Earth Engine');
-Export.table.toDrive(train2007, 'Training_Sibuyan_2007_L2', 'Google Earth Engine');
-Export.table.toDrive(train2010, 'Training_Sibuyan_2010_L2', 'Google Earth Engine');
-Export.table.toDrive(train2015, 'Training_Sibuyan_2015_L2', 'Google Earth Engine');
+Export.table.toDrive(roi2007train, 'ROI_Train_Sibuyan_2007_L2', 'Google Earth Engine');
+Export.table.toDrive(roi2010train, 'ROI_Train_Sibuyan_2010_L2', 'Google Earth Engine');
+Export.table.toDrive(roi2015train, 'ROI_Train_Sibuyan_2015_L2', 'Google Earth Engine');
+Export.table.toDrive(roi2007test, 'ROI_Test_Sibuyan_2007_L2', 'Google Earth Engine');
+Export.table.toDrive(roi2010test, 'ROI_Test_Sibuyan_2010_L2', 'Google Earth Engine');
+Export.table.toDrive(roi2015test, 'ROI_Test_Sibuyan_2015_L2', 'Google Earth Engine');
 Export.table.toDrive(validation2007, 'Validation_Sibuyan_2007_L2', 'Google Earth Engine');
 Export.table.toDrive(validation2010, 'Validation_Sibuyan_2010_L2', 'Google Earth Engine');
 Export.table.toDrive(validation2015, 'Validation_Sibuyan_2015_L2', 'Google Earth Engine');
@@ -410,4 +448,3 @@ Export.table.toDrive({
   fileFormat: 'CSV',
   folder: 'Google Earth Engine',
 });
-
