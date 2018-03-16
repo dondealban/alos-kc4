@@ -44,7 +44,7 @@ roi2015 <- rbind(train2015, test2015)
   sub2015 <- subset(roi2015, select=c(3:23,26))
 
 # 3. Add new Type column with land cover type string based on Code values
-  lookup <- c("FOR","SET","CRP","WET","GRA")
+  lookup <- c("FOR","SET","CRP","WET","GRA","OTH")
   sub2007$Type <- lookup[sub2007$Code]
   sub2010$Type <- lookup[sub2010$Code]
   sub2015$Type <- lookup[sub2015$Code]
