@@ -18,9 +18,18 @@ library(ggplot2)
 
 # Read Input Data ------------------------
 
-roi2007 <- read.csv(file="ROI_Sibuyan_2007_L4.csv", header=TRUE, sep=",")
-roi2010 <- read.csv(file="ROI_Sibuyan_2010_L4.csv", header=TRUE, sep=",")
-roi2015 <- read.csv(file="ROI_Sibuyan_2015_L4.csv", header=TRUE, sep=",")
+# Read training and testing data per year
+train2007 <- read.csv(file="ROI_Train_Sibuyan_2007_L4.csv", header=TRUE, sep=",")
+test2007 <- read.csv(file="ROI_Test_Sibuyan_2007_L4.csv", header=TRUE, sep=",")
+train2010 <- read.csv(file="ROI_Train_Sibuyan_2010_L4.csv", header=TRUE, sep=",")
+test2010 <- read.csv(file="ROI_Test_Sibuyan_2010_L4.csv", header=TRUE, sep=",")
+train2015 <- read.csv(file="ROI_Train_Sibuyan_2015_L4.csv", header=TRUE, sep=",")
+test2015 <- read.csv(file="ROI_Test_Sibuyan_2015_L4.csv", header=TRUE, sep=",")
+
+# Combine training and testing data per year into one dataframe
+roi2007 <- rbind(train2007, test2007)
+roi2010 <- rbind(train2010, test2010)
+roi2015 <- rbind(train2015, test2015)
 
 # Clean and Subset Data ------------------
 
