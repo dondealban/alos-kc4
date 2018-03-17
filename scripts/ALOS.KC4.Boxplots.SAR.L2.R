@@ -19,12 +19,12 @@ library(ggplot2)
 # Read Input Data ------------------------
 
 # Read training and testing data per year
-train2007 <- read.csv(file="ROI_Train_Sibuyan_2007_L2.csv", header=TRUE, sep=",")
-test2007 <- read.csv(file="ROI_Test_Sibuyan_2007_L2.csv", header=TRUE, sep=",")
-train2010 <- read.csv(file="ROI_Train_Sibuyan_2010_L2.csv", header=TRUE, sep=",")
-test2010 <- read.csv(file="ROI_Test_Sibuyan_2010_L2.csv", header=TRUE, sep=",")
-train2015 <- read.csv(file="ROI_Train_Sibuyan_2015_L2.csv", header=TRUE, sep=",")
-test2015 <- read.csv(file="ROI_Test_Sibuyan_2015_L2.csv", header=TRUE, sep=",")
+train2007 <- read.csv(file="ROI_Train_NNegros_2007_L2.csv", header=TRUE, sep=",")
+test2007 <- read.csv(file="ROI_Test_NNegros_2007_L2.csv", header=TRUE, sep=",")
+train2010 <- read.csv(file="ROI_Train_NNegros_2010_L2.csv", header=TRUE, sep=",")
+test2010 <- read.csv(file="ROI_Test_NNegros_2010_L2.csv", header=TRUE, sep=",")
+train2015 <- read.csv(file="ROI_Train_NNegros_2015_L2.csv", header=TRUE, sep=",")
+test2015 <- read.csv(file="ROI_Test_NNegros_2015_L2.csv", header=TRUE, sep=",")
 
 # Combine training and testing data per year into one dataframe
 roi2007 <- rbind(train2007, test2007)
