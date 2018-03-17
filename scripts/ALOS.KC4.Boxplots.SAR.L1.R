@@ -6,7 +6,7 @@
 #
 # Script By:      Jose Don T De Alban
 # Date Created:   17 Feb 2017
-# Last Modified:  15 Mar 2018
+# Last Modified:  17 Mar 2018
 
 # Set Working Directory ------------------
 
@@ -19,12 +19,12 @@ library(ggplot2)
 # Read Input Data ------------------------
 
 # Read training and testing data per year
-train2007 <- read.csv(file="ROI_Train_SNegros_2007_L1.csv", header=TRUE, sep=",")
-test2007 <- read.csv(file="ROI_Test_SNegros_2007_L1.csv", header=TRUE, sep=",")
-train2010 <- read.csv(file="ROI_Train_SNegros_2010_L1.csv", header=TRUE, sep=",")
-test2010 <- read.csv(file="ROI_Test_SNegros_2010_L1.csv", header=TRUE, sep=",")
-train2015 <- read.csv(file="ROI_Train_SNegros_2015_L1.csv", header=TRUE, sep=",")
-test2015 <- read.csv(file="ROI_Test_SNegros_2015_L1.csv", header=TRUE, sep=",")
+train2007 <- read.csv(file="ROI_Train_Sibuyan_2007_L1.csv", header=TRUE, sep=",")
+test2007 <- read.csv(file="ROI_Test_Sibuyan_2007_L1.csv", header=TRUE, sep=",")
+train2010 <- read.csv(file="ROI_Train_Sibuyan_2010_L1.csv", header=TRUE, sep=",")
+test2010 <- read.csv(file="ROI_Test_Sibuyan_2010_L1.csv", header=TRUE, sep=",")
+train2015 <- read.csv(file="ROI_Train_Sibuyan_2015_L1.csv", header=TRUE, sep=",")
+test2015 <- read.csv(file="ROI_Test_Sibuyan_2015_L1.csv", header=TRUE, sep=",")
 
 # Combine training and testing data per year into one dataframe
 roi2007 <- rbind(train2007, test2007)
