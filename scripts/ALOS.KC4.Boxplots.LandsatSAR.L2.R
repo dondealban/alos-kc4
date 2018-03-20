@@ -20,12 +20,12 @@ library(ggplot2)
 # Read Input Data ------------------------
 
 # Read training and testing data per year
-train2007 <- read.csv(file="ROI_Train_NNegros_2007_L2.csv", header=TRUE, sep=",")
-test2007 <- read.csv(file="ROI_Test_NNegros_2007_L2.csv", header=TRUE, sep=",")
-train2010 <- read.csv(file="ROI_Train_NNegros_2010_L2.csv", header=TRUE, sep=",")
-test2010 <- read.csv(file="ROI_Test_NNegros_2010_L2.csv", header=TRUE, sep=",")
-train2015 <- read.csv(file="ROI_Train_NNegros_2015_L2.csv", header=TRUE, sep=",")
-test2015 <- read.csv(file="ROI_Test_NNegros_2015_L2.csv", header=TRUE, sep=",")
+train2007 <- read.csv(file="ROI_Train_Sibuyan_2007_L2.csv", header=TRUE, sep=",")
+test2007 <- read.csv(file="ROI_Test_Sibuyan_2007_L2.csv", header=TRUE, sep=",")
+train2010 <- read.csv(file="ROI_Train_Sibuyan_2010_L2.csv", header=TRUE, sep=",")
+test2010 <- read.csv(file="ROI_Test_Sibuyan_2010_L2.csv", header=TRUE, sep=",")
+train2015 <- read.csv(file="ROI_Train_Sibuyan_2015_L2.csv", header=TRUE, sep=",")
+test2015 <- read.csv(file="ROI_Test_Sibuyan_2015_L2.csv", header=TRUE, sep=",")
 
 # Combine training and testing data per year into one dataframe
 roi2007 <- rbind(train2007, test2007)
@@ -45,7 +45,7 @@ roi2015 <- rbind(train2015, test2015)
   sub2015 <- subset(roi2015, select=c(2:7,9:34,37))
 
 # 3. Add new Type column with land cover type string based on Code values
-  lookup <- c("FOR","SET","CRP","WET","GRA","OTH")
+  lookup <- c("FOR","SET","CRP","WET","GRA")
   sub2007$Type <- lookup[sub2007$Code]
   sub2010$Type <- lookup[sub2010$Code]
   sub2015$Type <- lookup[sub2015$Code]
