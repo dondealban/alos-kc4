@@ -69,11 +69,11 @@ var nli2015 = (hh2015.multiply(hv2015)).divide(hh2015.add(hv2015));
 
 // Rescale floating point to integer
 var scaledhh2007 = hh2007.expression('1000*b("b1")').int32();
-var scaledhv2007 = hh2007.expression('1000*b("b1")').int32();
+var scaledhv2007 = hv2007.expression('1000*b("b1")').int32();
 var scaledhh2010 = hh2010.expression('1000*b("b1")').int32();
-var scaledhv2010 = hh2010.expression('1000*b("b1")').int32();
+var scaledhv2010 = hv2010.expression('1000*b("b1")').int32();
 var scaledhh2015 = hh2015.expression('1000*b("b1")').int32();
-var scaledhv2015 = hh2015.expression('1000*b("b1")').int32();
+var scaledhv2015 = hv2015.expression('1000*b("b1")').int32();
 
 // Rename rescaled Sigma0 channels
 scaledhh2007 = scaledhh2007.rename('HH');
