@@ -10,6 +10,10 @@
 
 setwd("/Users/dondealban/KC4/")
 
+# Set Random Seed ------------------------
+
+set.seed(2015)
+
 # Load Required Packages -----------------
 
 library(randomForest)
