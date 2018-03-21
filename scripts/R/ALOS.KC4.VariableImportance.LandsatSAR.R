@@ -6,7 +6,6 @@
 # Date Created:   03 Mar 2017
 # Last Modified:  21 Mar 2018
 
-
 # Set Working Directory ------------------
 
 setwd("/Users/dondealban/KC4/")
@@ -15,66 +14,50 @@ setwd("/Users/dondealban/KC4/")
 
 library(randomForest)
 
-# Read data, define variables, and store data in variables
-dataSetA1995 <- read.csv(file="Training_SetA_1995_LJ_30m_RF.csv", header=TRUE, sep=",")
-dataSetA2015 <- read.csv(file="Training_SetA_2015_LP_30m_RF.csv", header=TRUE, sep=",")
-dataSetB2015 <- read.csv(file="Training_SetB_2015_LP_30m_RF.csv", header=TRUE, sep=",")
+# Read Input Data ------------------------
 
-# PREPARE DATA
+# Read training data per site per year
+roi2007 <- read.csv(file="ROI_Train_NNegros_2007_L1.csv", header=TRUE, sep=",")
+roi2010 <- read.csv(file="ROI_Train_NNegros_2010_L1.csv", header=TRUE, sep=",")
+roi2015 <- read.csv(file="ROI_Train_NNegros_2015_L1.csv", header=TRUE, sep=",")
 
-# Create year (YEAR) column
-dataSetA1995$YEAR <- rep(1995,nrow(dataSetA1995))
-dataSetA2015$YEAR <- rep(2015,nrow(dataSetA2015))
-dataSetB2015$YEAR <- rep(2015,nrow(dataSetB2015))
+# Clean and Subset Data ------------------
 
-# Create land cover type (LC_TYPE) column 
-dataSetA1995$LC_TYPE <- ifelse(dataSetA1995$ClassID==0,"FOR",
-                               ifelse(dataSetA1995$ClassID==1,"MNG",
-                                      ifelse(dataSetA1995$ClassID==2,"OPM",
-                                             ifelse(dataSetA1995$ClassID==3,"RBM",
-                                                    ifelse(dataSetA1995$ClassID==4,"SHB",
-                                                           ifelse(dataSetA1995$ClassID==5,"RPD",
-                                                                  ifelse(dataSetA1995$ClassID==6,"BUA",
-                                                                         ifelse(dataSetA1995$ClassID==7,"BSG","WTR"))))))))
+# 1. Add new Code column based on ClassID column plus constant value of 1
+roi2007$Code <- roi2007[,8] + 1
+roi2010$Code <- roi2010[,8] + 1
+roi2015$Code <- roi2015[,8] + 1
 
-dataSetA2015$LC_TYPE <- ifelse(dataSetA2015$ClassID==0,"FOR",
-                               ifelse(dataSetA2015$ClassID==1,"MNG",
-                                      ifelse(dataSetA2015$ClassID==2,"OPM",
-                                             ifelse(dataSetA2015$ClassID==3,"RBM",
-                                                    ifelse(dataSetA2015$ClassID==4,"SHB",
-                                                           ifelse(dataSetA2015$ClassID==5,"RPD",
-                                                                  ifelse(dataSetA2015$ClassID==6,"BUA",
-                                                                         ifelse(dataSetA2015$ClassID==7,"BSG","WTR"))))))))
+# 2. Select columns
+sub2007 <- subset(roi2007, select=c(2:7,9:34,37))
+sub2010 <- subset(roi2010, select=c(2:7,9:34,37))
+sub2015 <- subset(roi2015, select=c(2:7,9:34,37))
 
-dataSetB2015$LC_TYPE <- ifelse(dataSetB2015$ClassID==0,"FOR",
-                               ifelse(dataSetB2015$ClassID==1,"MNG",
-                                      ifelse(dataSetB2015$ClassID==2,"OPM",
-                                             ifelse(dataSetB2015$ClassID==3,"RBM",
-                                                    ifelse(dataSetB2015$ClassID==4,"SHB",
-                                                           ifelse(dataSetB2015$ClassID==5,"RPD",
-                                                                  ifelse(dataSetB2015$ClassID==6,"BUA",
-                                                                         ifelse(dataSetB2015$ClassID==7,"BSG","WTR"))))))))
+# 3. Add new Type column with land cover type string based on Code values
+lookup <- c("FOR","NON")
+sub2007$Type <- lookup[sub2007$Code]
+sub2010$Type <- lookup[sub2010$Code]
+sub2015$Type <- lookup[sub2015$Code]
 
-# Rename column names
-names(dataSetA1995)[12:19] <- c("HH_ASM","HH_CON","HH_COR","HH_DIS","HH_ENT","HH_IDM","HH_SAVG","HH_VAR")
-names(dataSetA2015)[12:19] <- c("HH_ASM","HH_CON","HH_COR","HH_DIS","HH_ENT","HH_IDM","HH_SAVG","HH_VAR")
-names(dataSetB2015)[14:21] <- c("HH_ASM","HH_CON","HH_COR","HH_DIS","HH_ENT","HH_IDM","HH_SAVG","HH_VAR")
-names(dataSetB2015)[23:30] <- c("HV_ASM","HV_CON","HV_COR","HV_DIS","HV_ENT","HV_IDM","HV_SAVG","HV_VAR")
+# 4. Add Year column
+sub2007$YEAR <- rep(2007, nrow(sub2007))
+sub2010$YEAR <- rep(2010, nrow(sub2010))
+sub2015$YEAR <- rep(2015, nrow(sub2015))
 
-# Subset data by year
-SetA1995 <- subset(dataSetA1995, dataSetA1995$YEAR=="1995")
-SetA2015 <- subset(dataSetA2015, dataSetA2015$YEAR=="2015")
-SetB2015 <- subset(dataSetB2015, dataSetB2015$YEAR=="2015")
+# 5. Change column names
+list <- c("B1","B2","B3","B4","B5","B7","EVI",
+          "HH","HH_ASM","HH_CON","HH_COR","HH_DIS","HH_ENT","HH_IDM","HH_SAVG","HH_VAR",
+          "HV","HV_ASM","HV_CON","HV_COR","HV_DIS","HV_ENT","HV_IDM","HV_SAVG","HV_VAR",
+          "LSWI","NDI","NDTI","NDVI","NLI","RAT","SATVI","CODE","LC_TYPE","YEAR")
+colnames(sub2007) <- c(list)
+colnames(sub2010) <- c(list)
+colnames(sub2015) <- c(list)
 
-# Define factor predictor variables
+# 6. Define factor predictor variables
 # LC_TYPE
-SetA1995$LC_TYPE <- factor(SetA1995$LC_TYPE)
-SetA2015$LC_TYPE <- factor(SetA2015$LC_TYPE)
-SetB2015$LC_TYPE <- factor(SetB2015$LC_TYPE)
-# Year
-SetA1995$YEAR <- factor(SetA1995$YEAR)
-SetA2015$YEAR <- factor(SetA2015$YEAR)
-SetB2015$YEAR <- factor(SetB2015$YEAR)
+sub2007$LC_TYPE <- factor(sub2007$LC_TYPE)
+sub2010$LC_TYPE <- factor(sub2010$LC_TYPE)
+sub2015$LC_TYPE <- factor(sub2015$LC_TYPE)
 
 
 # SET RANDOM SEED
