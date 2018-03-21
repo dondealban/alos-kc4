@@ -112,12 +112,14 @@ print(rf2015t1)
 sink()
 
 # Save graph of random forest variable importance as PDF file
-pdf("RF-Variable-Importance-2007.pdf", width=7, height=5.5)
-varImpPlot(rf2007)
+pdf("RF-Variable-Importance-2007.pdf", width=4, height=8)
+varImpPlot(rf2007, type=1)
 dev.off()
-pdf("RF-Variable-Importance-2010.pdf", width=7, height=5.5)
-varImpPlot(rf2010)
+pdf("RF-Variable-Importance-2010.pdf", width=4, height=8)
+varImpPlot(rf2010, type=1)
 dev.off()
-pdf("RF-Variable-Importance-2015.pdf", width=7, height=5.5)
-varImpPlot(rf2015)
+pdf("RF-Variable-Importance-2015.pdf", width=4, height=8)
+varImpPlot(rf2015, type=1)
 dev.off()
+
+
