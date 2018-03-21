@@ -7,12 +7,12 @@
 # Last Modified:  21 Mar 2018
 
 
-# LOAD LIBRARIES AND DATA
+# Set Working Directory ------------------
 
-# Set working directory
-setwd("/Users/dondealban/Dropbox/Research/myanmar/variable importance/rf randomforest/new/")
+setwd("/Users/dondealban/KC4/")
 
-# Load the required R libraries
+# Load Required Packages -----------------
+
 library(randomForest)
 
 # Read data, define variables, and store data in variables
