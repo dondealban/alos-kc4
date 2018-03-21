@@ -19,9 +19,9 @@ library(randomForest)
 # Read Input Data ------------------------
 
 # Read training data per site per year
-roi2007 <- read.csv(file="ROI_Train_NNegros_2007_L1.csv", header=TRUE, sep=",")
-roi2010 <- read.csv(file="ROI_Train_NNegros_2010_L1.csv", header=TRUE, sep=",")
-roi2015 <- read.csv(file="ROI_Train_NNegros_2015_L1.csv", header=TRUE, sep=",")
+roi2007 <- read.csv(file="ROI_Train_NNegros_2007_L2.csv", header=TRUE, sep=",")
+roi2010 <- read.csv(file="ROI_Train_NNegros_2010_L2.csv", header=TRUE, sep=",")
+roi2015 <- read.csv(file="ROI_Train_NNegros_2015_L2.csv", header=TRUE, sep=",")
 
 
 # Clean and Subset Data ------------------
@@ -37,7 +37,7 @@ sub2010 <- subset(roi2010, select=c(2:7,9:34,37))
 sub2015 <- subset(roi2015, select=c(2:7,9:34,37))
 
 # 3. Add new Type column with land cover type string based on Code values
-lookup <- c("FOR","NON")
+lookup <- c("FOR","SET","CRP","WET","GRA")
 sub2007$Type <- lookup[sub2007$Code]
 sub2010$Type <- lookup[sub2010$Code]
 sub2015$Type <- lookup[sub2015$Code]
@@ -121,5 +121,3 @@ dev.off()
 pdf("RF-Variable-Importance-2015.pdf", width=4, height=8)
 dotchart(sort(rf2015t1[,1]), xlab="Mean Decrease in Accuracy")
 dev.off()
-
-
