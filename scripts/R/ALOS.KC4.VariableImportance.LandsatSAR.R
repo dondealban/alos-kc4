@@ -64,98 +64,36 @@ sub2010$LC_TYPE <- factor(sub2010$LC_TYPE)
 sub2015$LC_TYPE <- factor(sub2015$LC_TYPE)
 
 
-# SET RANDOM SEED
-set.seed(2018)
+# Develop Random Forests Object ----------
+# Note: mtry uses default value which is sqrt of number of predictor variables (n=32)
 
+rf2007 <- randomForest(LC_TYPE ~ B1 + B2 + B3 + B4 + B5 + B7 + EVI +
+                       HH + HH_ASM + HH_CON + HH_COR + HH_DIS + HH_ENT + HH_IDM + HH_SAVG + HH_VAR +
+                       HV + HV_ASM + HV_CON + HV_COR + HV_DIS + HV_ENT + HV_IDM + HV_SAVG + HV_VAR +
+                       LSWI + NDI + NDTI + NDVI + NLI + RAT + SATVI, data=sub2007, 
+                       ntree=100, importance=TRUE)
+rf2010 <- randomForest(LC_TYPE ~ B1 + B2 + B3 + B4 + B5 + B7 + EVI +
+                       HH + HH_ASM + HH_CON + HH_COR + HH_DIS + HH_ENT + HH_IDM + HH_SAVG + HH_VAR +
+                       HV + HV_ASM + HV_CON + HV_COR + HV_DIS + HV_ENT + HV_IDM + HV_SAVG + HV_VAR +
+                       LSWI + NDI + NDTI + NDVI + NLI + RAT + SATVI, data=sub2010, 
+                       ntree=100, importance=TRUE)
+rf2015 <- randomForest(LC_TYPE ~ B1 + B2 + B3 + B4 + B5 + B7 + EVI +
+                       HH + HH_ASM + HH_CON + HH_COR + HH_DIS + HH_ENT + HH_IDM + HH_SAVG + HH_VAR +
+                       HV + HV_ASM + HV_CON + HV_COR + HV_DIS + HV_ENT + HV_IDM + HV_SAVG + HV_VAR +
+                       LSWI + NDI + NDTI + NDVI + NLI + RAT + SATVI, data=sub2010, 
+                       ntree=100, importance=TRUE)
 
-# RUN RANDOM FOREST IMPLEMENTATION
+# Calculate Variable Importance ----------
 
-# randomForest package implementation
-# Note: mtry uses default value which is sqrt of number of predictor variables
+# 1. Variable importance based on permutation importance (mean decrease in accuracy)
+rf2007t1 <- importance(rf2007, type=1)
+rf2010t1 <- importance(rf2010, type=1)
+rf2015t1 <- importance(rf2015, type=1)
 
-# Set A 1995
-
-# Landsat only (n=12)
-rfSetA1995l <- randomForest(LC_TYPE ~ B1 + B2 + B3 + B4 + B5 + B6 + B7 + EVI +
-                              LSWI + NDTI + NDVI + SATVI, data=SetA1995,
-                            ntree=100, importance=TRUE)
-# SAR only (n=9)
-rfSetA1995s <- randomForest(LC_TYPE ~ HH + HH_ASM + HH_CON + HH_COR + HH_DIS + HH_ENT + 
-                              HH_IDM + HH_SAVG + HH_VAR, data=SetA1995,
-                            ntree=100, importance=TRUE)
-# Landsat+SAR (n=21)
-rfSetA1995ls <- randomForest(LC_TYPE ~ B1 + B2 + B3 + B4 + B5 + B6 + B7 + EVI +
-                               HH + HH_ASM + HH_CON + HH_COR + HH_DIS + HH_ENT + HH_IDM + HH_SAVG + HH_VAR +
-                               LSWI + NDTI + NDVI + SATVI, data=SetA1995, 
-                             ntree=100, importance=TRUE)
-
-# Set A 2015
-
-# Landsat only (n=12)
-rfSetA2015l <- randomForest(LC_TYPE ~ B10 + B2 + B3 + B4 + B5 + B6 + B7 + EVI +
-                              LSWI + NDTI + NDVI + SATVI, data=SetA2015,
-                            ntree=100, importance=TRUE)
-# SAR only (n=9)
-rfSetA2015s <- randomForest(LC_TYPE ~ HH + HH_ASM + HH_CON + HH_COR + HH_DIS + HH_ENT + 
-                              HH_IDM + HH_SAVG + HH_VAR, data=SetA2015,
-                            ntree=100, importance=TRUE)
-# Landsat+SAR (n=21)
-rfSetA2015ls <- randomForest(LC_TYPE ~ B10 + B2 + B3 + B4 + B5 + B6 + B7 + EVI +
-                               HH + HH_ASM + HH_CON + HH_COR + HH_DIS + HH_ENT + HH_IDM + HH_SAVG + HH_VAR +
-                               LSWI + NDTI + NDVI + SATVI, data=SetA2015, 
-                             ntree=100, importance=TRUE)
-
-# Set B 2015
-
-# Landsat only (n=12)
-rfSetB2015l <- randomForest(LC_TYPE ~ B2 + B3 + B4 + B5 + B6 + B7 + B10 + EVI +
-                              LSWI + NDTI + NDVI + SATVI, data=SetB2015,
-                            ntree=100, importance=TRUE)
-# SAR only (n=24)
-rfSetB2015s <- randomForest(LC_TYPE ~ AVE + DIF +
-                              HH + HH_ASM + HH_CON + HH_COR + HH_DIS + HH_ENT + HH_IDM + HH_SAVG + HH_VAR +
-                              HV + HV_ASM + HV_CON + HV_COR + HV_DIS + HV_ENT + HV_IDM + HV_SAVG + HV_VAR +
-                              NDI + NLI + RT1 + RT2, data=SetB2015,
-                            ntree=100, importance=TRUE)
-# Landsat+SAR (n=36)
-rfSetB2015ls <- randomForest(LC_TYPE ~ AVE + B2 + B3 + B4 + B5 + B6 + B7 + B10 + DIF + EVI +
-                               HH + HH_ASM + HH_CON + HH_COR + HH_DIS + HH_ENT + HH_IDM + HH_SAVG + HH_VAR +
-                               HV + HV_ASM + HV_CON + HV_COR + HV_DIS + HV_ENT + HV_IDM + HV_SAVG + HV_VAR +
-                               LSWI + NDI + NDTI + NDVI + NLI + RT1 + RT2 + SATVI, data=SetB2015, 
-                             ntree=100, importance=TRUE)
-
-
-# RANDOM FOREST VARIABLE IMPORTANCE
-
-# Variable importance based on permutation importance (mean decrease in accuracy)
-
-# Set A 1995
-rfSetA1995lt1  <- importance(rfSetA1995l,  type=1)
-rfSetA1995st1  <- importance(rfSetA1995s,  type=1)
-rfSetA1995lst1 <- importance(rfSetA1995ls, type=1)
-# Set A 2015
-rfSetA2015lt1  <- importance(rfSetA2015l,  type=1)
-rfSetA2015st1  <- importance(rfSetA2015s,  type=1)
-rfSetA2015lst1 <- importance(rfSetA2015ls, type=1)
-# Set B 2015
-rfSetB2015lt1  <- importance(rfSetB2015l,  type=1)
-rfSetB2015st1  <- importance(rfSetB2015s,  type=1)
-rfSetB2015lst1 <- importance(rfSetB2015ls, type=1)
-
-# Variable importance based on Gini importance (mean decrease in impurity)
-
-# Set A 1995
-rfSetA1995lt2  <- importance(rfSetA1995l,  type=2)
-rfSetA1995st2  <- importance(rfSetA1995s,  type=2)
-rfSetA1995lst2 <- importance(rfSetA1995ls, type=2)
-# Set A 2015
-rfSetA2015lt2  <- importance(rfSetA2015l,  type=2)
-rfSetA2015st2  <- importance(rfSetA2015s,  type=2)
-rfSetA2015lst2 <- importance(rfSetA2015ls, type=2)
-# Set B 2015
-rfSetB2015lt2  <- importance(rfSetB2015l,  type=2)
-rfSetB2015st2  <- importance(rfSetB2015s,  type=2)
-rfSetB2015lst2 <- importance(rfSetB2015ls, type=2)
+# 2. Variable importance based on Gini importance (mean decrease in impurity)
+# rf2007t2 <- importance(rf2007, type=2)
+# rf2010t2 <- importance(rf2010, type=2)
+# rf2015t2 <- importance(rf2015, type=2)
 
 
 # SAVE OUTPUTS TO FILE
