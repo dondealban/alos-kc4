@@ -7,16 +7,14 @@
 # Last Modified:  21 Mar 2018
 
 # Set Working Directory ------------------
-
 setwd("/Users/dondealban/KC4/")
 
 # Set Random Seed ------------------------
-
 set.seed(2015)
 
 # Load Required Packages -----------------
-
 library(randomForest)
+
 
 # Read Input Data ------------------------
 
@@ -24,6 +22,7 @@ library(randomForest)
 roi2007 <- read.csv(file="ROI_Train_NNegros_2007_L1.csv", header=TRUE, sep=",")
 roi2010 <- read.csv(file="ROI_Train_NNegros_2010_L1.csv", header=TRUE, sep=",")
 roi2015 <- read.csv(file="ROI_Train_NNegros_2015_L1.csv", header=TRUE, sep=",")
+
 
 # Clean and Subset Data ------------------
 
@@ -64,7 +63,7 @@ sub2010$LC_TYPE <- factor(sub2010$LC_TYPE)
 sub2015$LC_TYPE <- factor(sub2015$LC_TYPE)
 
 
-# Develop Random Forests Object ----------
+# Develop Random Forests Objects ---------
 # Note: mtry uses default value which is sqrt of number of predictor variables (n=32)
 
 rf2007 <- randomForest(LC_TYPE ~ B1 + B2 + B3 + B4 + B5 + B7 + EVI +
@@ -96,75 +95,29 @@ rf2015t1 <- importance(rf2015, type=1)
 # rf2015t2 <- importance(rf2015, type=2)
 
 
-# SAVE OUTPUTS TO FILE
+# Save Output Files ----------------------
 
-# Save random forest package results as txt file
-
-sink("output-rf-randomforest-SetA1995.txt", append=FALSE, split=TRUE)
-print(rfSetA1995l)
-print(rfSetA1995lt1)
-print(rfSetA1995lt2)
-print(rfSetA1995s)
-print(rfSetA1995st1)
-print(rfSetA1995st2)
-print(rfSetA1995ls)
-print(rfSetA1995lst1)
-print(rfSetA1995lst2)
+# Save random forest object results as TXT file
+sink("RandomForests-2007.txt", append=FALSE, split=TRUE)
+print(rf2007)
+print(rf2007t1)
 sink()
-sink("output-rf-randomforest-SetA2015.txt", append=FALSE, split=TRUE)
-print(rfSetA2015l)
-print(rfSetA2015lt1)
-print(rfSetA2015lt2)
-print(rfSetA2015s)
-print(rfSetA2015st1)
-print(rfSetA2015st2)
-print(rfSetA2015ls)
-print(rfSetA2015lst1)
-print(rfSetA2015lst2)
+sink("RandomForests-2010.txt", append=FALSE, split=TRUE)
+print(rf2010)
+print(rf2010t1)
 sink()
-sink("output-rf-randomforest-SetB2015.txt", append=FALSE, split=TRUE)
-print(rfSetB2015l)
-print(rfSetB2015lt1)
-print(rfSetB2015lt2)
-print(rfSetB2015s)
-print(rfSetB2015st1)
-print(rfSetB2015st2)
-print(rfSetB2015ls)
-print(rfSetB2015lst1)
-print(rfSetB2015lst2)
+sink("RandomForests-2015.txt", append=FALSE, split=TRUE)
+print(rf2015)
+print(rf2015t1)
 sink()
 
-# Save graph of random forest variable importance as pdf file
-
-# Set A 1995
-pdf("output-rf-varimp-graph-SetA1995-landsat.pdf", width=7, height=5.5)
-varImpPlot(rfSetA1995l)
+# Save graph of random forest variable importance as PDF file
+pdf("RF-Variable-Importance-2007.pdf", width=7, height=5.5)
+varImpPlot(rf2007t1)
 dev.off()
-pdf("output-rf-varimp-graph-SetA1995-sar.pdf", width=7, height=5.5)
-varImpPlot(rfSetA1995s)
+pdf("RF-Variable-Importance-2010.pdf", width=7, height=5.5)
+varImpPlot(rf2010t1)
 dev.off()
-pdf("output-rf-varimp-graph-SetA1995-landsat-sar.pdf", width=7, height=5.5)
-varImpPlot(rfSetA1995ls)
-dev.off()
-
-# Set A 2015
-pdf("output-rf-varimp-graph-SetA2015-landsat.pdf", width=7, height=5.5)
-varImpPlot(rfSetA2015l)
-dev.off()
-pdf("output-rf-varimp-graph-SetA2015-sar.pdf", width=7, height=5.5)
-varImpPlot(rfSetA2015s)
-dev.off()
-pdf("output-rf-varimp-graph-SetA2015-landsat-sar.pdf", width=7, height=5.5)
-varImpPlot(rfSetA2015ls)
-dev.off()
-
-# Set B 2015
-pdf("output-rf-varimp-graph-SetB2015-landsat.pdf", width=7, height=5.5)
-varImpPlot(rfSetB2015l)
-dev.off()
-pdf("output-rf-varimp-graph-SetB2015-sar.pdf", width=7, height=5.5)
-varImpPlot(rfSetB2015s)
-dev.off()
-pdf("output-rf-varimp-graph-SetB2015-landsat-sar.pdf", width=9, height=7.5)
-varImpPlot(rfSetB2015ls)
+pdf("RF-Variable-Importance-2015.pdf", width=7, height=5.5)
+varImpPlot(rf2015t1)
 dev.off()
