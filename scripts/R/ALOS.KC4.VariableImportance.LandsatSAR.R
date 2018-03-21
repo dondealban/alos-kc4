@@ -113,13 +113,13 @@ sink()
 
 # Save graph of random forest variable importance as PDF file
 pdf("RF-Variable-Importance-2007.pdf", width=4, height=8)
-varImpPlot(rf2007, type=1)
+dotchart(sort(rf2007t1[,1]), xlab="Mean Decrease in Accuracy")
 dev.off()
 pdf("RF-Variable-Importance-2010.pdf", width=4, height=8)
-varImpPlot(rf2010, type=1)
+dotchart(sort(rf2010t1[,1]), xlab="Mean Decrease in Accuracy")
 dev.off()
 pdf("RF-Variable-Importance-2015.pdf", width=4, height=8)
-varImpPlot(rf2015, type=1)
+dotchart(sort(rf2015t1[,1]), xlab="Mean Decrease in Accuracy")
 dev.off()
 
 
