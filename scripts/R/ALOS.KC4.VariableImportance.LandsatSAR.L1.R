@@ -19,9 +19,9 @@ library(randomForest)
 # Read Input Data ------------------------
 
 # Read training data per site per year
-roi2007 <- read.csv(file="ROI_Train_NNegros_2007_L1.csv", header=TRUE, sep=",")
-roi2010 <- read.csv(file="ROI_Train_NNegros_2010_L1.csv", header=TRUE, sep=",")
-roi2015 <- read.csv(file="ROI_Train_NNegros_2015_L1.csv", header=TRUE, sep=",")
+roi2007 <- read.csv(file="ROI_Train_SNegros_2007_L1.csv", header=TRUE, sep=",")
+roi2010 <- read.csv(file="ROI_Train_SNegros_2010_L1.csv", header=TRUE, sep=",")
+roi2015 <- read.csv(file="ROI_Train_SNegros_2015_L1.csv", header=TRUE, sep=",")
 
 
 # Clean and Subset Data ------------------

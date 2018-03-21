@@ -19,9 +19,9 @@ library(randomForest)
 # Read Input Data ------------------------
 
 # Read training data per site per year
-roi2007 <- read.csv(file="ROI_Train_NNegros_2007_L4.csv", header=TRUE, sep=",")
-roi2010 <- read.csv(file="ROI_Train_NNegros_2010_L4.csv", header=TRUE, sep=",")
-roi2015 <- read.csv(file="ROI_Train_NNegros_2015_L4.csv", header=TRUE, sep=",")
+roi2007 <- read.csv(file="ROI_Train_Sibuyan_2007_L4.csv", header=TRUE, sep=",")
+roi2010 <- read.csv(file="ROI_Train_Sibuyan_2010_L4.csv", header=TRUE, sep=",")
+roi2015 <- read.csv(file="ROI_Train_Sibuyan_2015_L4.csv", header=TRUE, sep=",")
 
 
 # Clean and Subset Data ------------------
@@ -37,7 +37,7 @@ sub2010 <- subset(roi2010, select=c(2:7,9:34,37))
 sub2015 <- subset(roi2015, select=c(2:7,9:34,37))
 
 # 3. Add new Type column with land cover type string based on Code values
-lookup <- c("CFB","OFB","FPB","MGF","BUA","CAC","CPC","FSP","ILW","NGL","WLF","WSH","WWG")
+lookup <- c("CFB","OFB","MGF","BUA","CAC","CPC","ILW","NGL","WSH","WWG")
 sub2007$Type <- lookup[sub2007$Code]
 sub2010$Type <- lookup[sub2010$Code]
 sub2015$Type <- lookup[sub2015$Code]
