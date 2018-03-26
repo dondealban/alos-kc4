@@ -4,7 +4,7 @@
 #
 # Script By:      Jose Don T De Alban
 # Date Created:   03 Mar 2017
-# Last Modified:  21 Mar 2018
+# Last Modified:  26 Mar 2018
 
 # Set Working Directory ------------------
 setwd("/Users/dondealban/KC4/")
@@ -19,9 +19,9 @@ library(randomForest)
 # Read Input Data ------------------------
 
 # Read training data per site per year
-roi2007 <- read.csv(file="ROI_Train_Sibuyan_2007_L3.csv", header=TRUE, sep=",")
-roi2010 <- read.csv(file="ROI_Train_Sibuyan_2010_L3.csv", header=TRUE, sep=",")
-roi2015 <- read.csv(file="ROI_Train_Sibuyan_2015_L3.csv", header=TRUE, sep=",")
+roi2007 <- read.csv(file="ROI_Train_NNegros_2007_L3.csv", header=TRUE, sep=",")
+roi2010 <- read.csv(file="ROI_Train_NNegros_2010_L3.csv", header=TRUE, sep=",")
+roi2015 <- read.csv(file="ROI_Train_NNegros_2015_L3.csv", header=TRUE, sep=",")
 
 
 # Clean and Subset Data ------------------
@@ -37,7 +37,8 @@ sub2010 <- subset(roi2010, select=c(2:7,9:34,37))
 sub2015 <- subset(roi2015, select=c(2:7,9:34,37))
 
 # 3. Add new Type column with land cover type string based on Code values
-lookup <- c("CF","OF","MF","BU","AC","PC","IW","GL","SH","WG")
+lookup <- c("CF","OF","MF","BU","AC","PC","FP","IW","GL","FW","SH","WG") # NNegros
+# lookup <- c("CF","OF","MF","BU","AC","PC","IW","GL","SH","WG") # Sibuyan
 sub2007$Type <- lookup[sub2007$Code]
 sub2010$Type <- lookup[sub2010$Code]
 sub2015$Type <- lookup[sub2015$Code]
@@ -121,3 +122,8 @@ dev.off()
 pdf("RF-Variable-Importance-2015.pdf", width=4, height=8)
 dotchart(sort(rf2015t1[,1]), xlab="Mean Decrease in Accuracy")
 dev.off()
+
+# Export variable importance dataframes to csv files
+write.csv(rf2007t1, file="rf2007t1.csv")
+write.csv(rf2010t1, file="rf2010t1.csv")
+write.csv(rf2015t1, file="rf2015t1.csv")
