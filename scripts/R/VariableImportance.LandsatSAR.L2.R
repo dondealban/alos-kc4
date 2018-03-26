@@ -4,7 +4,7 @@
 #
 # Script By:      Jose Don T De Alban
 # Date Created:   03 Mar 2017
-# Last Modified:  21 Mar 2018
+# Last Modified:  26 Mar 2018
 
 # Set Working Directory ------------------
 setwd("/Users/dondealban/KC4/")
@@ -19,9 +19,9 @@ library(randomForest)
 # Read Input Data ------------------------
 
 # Read training data per site per year
-roi2007 <- read.csv(file="ROI_Train_SNegros_2007_L2.csv", header=TRUE, sep=",")
-roi2010 <- read.csv(file="ROI_Train_SNegros_2010_L2.csv", header=TRUE, sep=",")
-roi2015 <- read.csv(file="ROI_Train_SNegros_2015_L2.csv", header=TRUE, sep=",")
+roi2007 <- read.csv(file="ROI_Train_Sibuyan_2007_L2.csv", header=TRUE, sep=",")
+roi2010 <- read.csv(file="ROI_Train_Sibuyan_2010_L2.csv", header=TRUE, sep=",")
+roi2015 <- read.csv(file="ROI_Train_Sibuyan_2015_L2.csv", header=TRUE, sep=",")
 
 
 # Clean and Subset Data ------------------
@@ -121,3 +121,8 @@ dev.off()
 pdf("RF-Variable-Importance-2015.pdf", width=4, height=8)
 dotchart(sort(rf2015t1[,1]), xlab="Mean Decrease in Accuracy")
 dev.off()
+
+# Export variable importance dataframes to csv files
+write.csv(rf2007t1, file="rf2007t1.csv")
+write.csv(rf2010t1, file="rf2010t1.csv")
+write.csv(rf2015t1, file="rf2015t1.csv")
