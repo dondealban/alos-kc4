@@ -101,4 +101,3 @@ ggsave(plotL4, file="UAPA-Boxplot-L4.pdf", width=19.89, height=15, units="cm", d
 
 ggsave(plotL1a, file="UAPA-Boxplot-L1-Adj.pdf", width=19.89, height=15, units="cm", dpi=300)
 ggsave(plotL2a, file="UAPA-Boxplot-L2-Adj.pdf", width=19.89, height=15, units="cm", dpi=300)
-
