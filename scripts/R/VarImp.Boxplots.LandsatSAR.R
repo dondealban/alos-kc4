@@ -1,3 +1,11 @@
+# This script produces boxplots of the variable importance scores from Random Forests
+# classifier. The mean decrease on accuracy of each predictor variable is plotted at
+# four classification levels.
+#
+# Script By:      Jose Don T De Alban
+# Date Created:   26 Mar 2017
+# Last Modified:  27 Mar 2018
+
 # Set Working Directory ------------------
 
 setwd("/Users/dondealban/KC4/")
